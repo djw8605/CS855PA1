@@ -6,6 +6,8 @@
 Welcome to CS855 ATM Server's documentation!
 ============================================
 
+This is a programming assignment for CS855 Distributed Operating Systems class.
+
 Contents:
 
 .. toctree::
