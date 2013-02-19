@@ -1,0 +1,192 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Server Documentation &mdash; CS855 ATM Server 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CS855 ATM Server 1.0 documentation" href="index.html" />
+    <link rel="next" title="Client Documentation" href="client.html" />
+    <link rel="prev" title="Welcome to CS855 ATM Server’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="client.html" title="Client Documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to CS855 ATM Server’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">CS855 ATM Server 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="server-documentation">
+<h1>Server Documentation<a class="headerlink" href="#server-documentation" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="ATMServer.ATMServer">
+<em class="property">class </em><tt class="descclassname">ATMServer.</tt><tt class="descname">ATMServer</tt><a class="headerlink" href="#ATMServer.ATMServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the main ATMServer that should be executed.</p>
+<dl class="docutils">
+<dt>It can be executed with the command::</dt>
+<dd>$ python ATMServer.py</dd>
+</dl>
+<p>All public functions return a status dict with the following elements:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>status (str)</dt>
+<dd>Either <tt class="docutils literal"><span class="pre">OK</span></tt> or <tt class="docutils literal"><span class="pre">ERROR</span></tt> indicating success or failure, respectibly</dd>
+<dt>reason (str)</dt>
+<dd>If status is <tt class="docutils literal"><span class="pre">ERROR</span></tt>, then reason is the error string describing the issue.</dd>
+<dt>result (str)</dt>
+<dd>If the function requires sending back information, it will be stored in the result</dd>
+</dl>
+</div></blockquote>
+<dl class="method">
+<dt id="ATMServer.ATMServer.deposit">
+<tt class="descname">deposit</tt><big>(</big><em>account</em>, <em>amount</em><big>)</big><a class="headerlink" href="#ATMServer.ATMServer.deposit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deposit money into the account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>account</strong> (<em>int</em>) &#8211; Account number to deposit money into</li>
+<li><strong>amount</strong> (<em>float</em>) &#8211; value to be added to the account</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">status dict (described above)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This function will fail if the account does not exist.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ATMServer.ATMServer.inquiry">
+<tt class="descname">inquiry</tt><big>(</big><em>account</em><big>)</big><a class="headerlink" href="#ATMServer.ATMServer.inquiry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inquire the account amount</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>account</strong> (<em>int</em>) &#8211; Account number to deposit money into</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">status dict (described above)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ATMServer.ATMServer.withdraw">
+<tt class="descname">withdraw</tt><big>(</big><em>account</em>, <em>amount</em><big>)</big><a class="headerlink" href="#ATMServer.ATMServer.withdraw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Withdraw money from the account</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>account</strong> (<em>int</em>) &#8211; Account number to deposit money into</li>
+<li><strong>amount</strong> (<em>float</em>) &#8211; value to be added to the account</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">status dict (described above)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This function will fail if the account does not have sufficient funds to make the withdraw.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to CS855 ATM Server&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="client.html"
+                        title="next chapter">Client Documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/server.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="client.html" title="Client Documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to CS855 ATM Server’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">CS855 ATM Server 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Derek Weitzel.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
