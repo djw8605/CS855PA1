@@ -36,6 +36,9 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="client.html" title="Client Documentation"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -56,13 +59,13 @@
 <dt id="ATMServer.ATMServer">
 <em class="property">class </em><tt class="descclassname">ATMServer.</tt><tt class="descname">ATMServer</tt><a class="headerlink" href="#ATMServer.ATMServer" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is the main ATMServer that should be executed.</p>
-<dl class="docutils">
-<dt>It can be executed with the command::</dt>
-<dd>$ python ATMServer.py</dd>
-</dl>
-<p>All public functions return a status dict with the following elements:</p>
-<blockquote>
-<div><dl class="docutils">
+<p>It can be executed with the command:</p>
+<div class="highlight-python"><pre>$ python ATMServer.py</pre>
+</div>
+<p>By default, it will run on port 9000 of the local server, and will listen to traffic from all sources (insecure!)</p>
+<dl class="docutils" id="status-dict">
+<dt>All public functions return a status <tt class="docutils literal"><span class="pre">dict</span></tt> with the following elements:</dt>
+<dd><dl class="first last docutils">
 <dt>status (str)</dt>
 <dd>Either <tt class="docutils literal"><span class="pre">OK</span></tt> or <tt class="docutils literal"><span class="pre">ERROR</span></tt> indicating success or failure, respectibly</dd>
 <dt>reason (str)</dt>
@@ -70,7 +73,8 @@
 <dt>result (str)</dt>
 <dd>If the function requires sending back information, it will be stored in the result</dd>
 </dl>
-</div></blockquote>
+</dd>
+</dl>
 <dl class="method">
 <dt id="ATMServer.ATMServer.deposit">
 <tt class="descname">deposit</tt><big>(</big><em>account</em>, <em>amount</em><big>)</big><a class="headerlink" href="#ATMServer.ATMServer.deposit" title="Permalink to this definition">¶</a></dt>
@@ -85,7 +89,7 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">status dict (described above)</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">status dict, see: <a class="reference internal" href="#status-dict"><em>Status Dictionary</em></a></p>
 </td>
 </tr>
 </tbody>
@@ -103,7 +107,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>account</strong> (<em>int</em>) &#8211; Account number to deposit money into</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">status dict (described above)</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">status dict, see: <a class="reference internal" href="#status-dict"><em>Status Dictionary</em></a></td>
 </tr>
 </tbody>
 </table>
@@ -123,7 +127,7 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">status dict (described above)</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">status dict, see: <a class="reference internal" href="#status-dict"><em>Status Dictionary</em></a></p>
 </td>
 </tr>
 </tbody>
@@ -175,6 +179,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li class="right" >
           <a href="client.html" title="Client Documentation"
              >next</a> |</li>
