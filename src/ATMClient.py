@@ -1,7 +1,34 @@
 #!/usr/bin/python
+"""
+    
+.. moduleauthor:: Derek Weitzel <dweitzel@cse.unl.edu>
+
+The ATM Client can be used for example by issueing the command::
+
+    $ python ATMClient.py <server> <port> <operation> <account> [<amount>]
+
+server
+    The server that the ATM client should connect to.
+port
+    Port that the client should use to connect to the ATM Server
+operation
+    One of:
+    * inquiry - Check the status of an account
+    * deposit - Deposit money into the account
+    * withdraw - Withdraw money from an account
+account
+    This is the numeric account number.  Must be an integer
+amount
+    Amount of money to either deposit or withdraw
+
+"""
+
 
 import xmlrpclib
 import sys
+
+
+
 
 
 def usage():
@@ -9,6 +36,9 @@ def usage():
 
 
 def main():
+    """This is the main function
+       
+    """
     # First parse the arguments
     if len(sys.argv) < 4:
         print "Not enough arguments."

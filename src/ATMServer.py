@@ -5,11 +5,14 @@ class ATMServer:
     """This is the main ATMServer that should be executed.
     
     It can be executed with the command::
+    
         $ python ATMServer.py
-        
-    All public functions return a status dict with the following elements:
     
+    By default, it will run on port 9000 of the local server, and will listen to traffic from all sources (insecure!)
     
+    .. _status-dict:
+    
+    All public functions return a status ``dict`` with the following elements:
         status (str)
             Either ``OK`` or ``ERROR`` indicating success or failure, respectibly
         reason (str)
@@ -31,7 +34,7 @@ class ATMServer:
         :param int account: Account number to deposit money into
         :param float amount: value to be added to the account
             
-        :rtype: status dict (described above)
+        :rtype: status dict, see: :ref:`Status Dictionary <status-dict>`
         
         This function will fail if the account does not exist.
         
@@ -49,7 +52,7 @@ class ATMServer:
         :param int account: Account number to deposit money into
         :param float amount: value to be added to the account
             
-        :rtype: status dict (described above)
+        :rtype: status dict, see: :ref:`Status Dictionary <status-dict>`
             
         This function will fail if the account does not have sufficient funds to make the withdraw.
         
@@ -70,7 +73,7 @@ class ATMServer:
         
         :param int account: Account number to deposit money into
             
-        :rtype: status dict (described above)
+        :rtype: status dict, see: :ref:`Status Dictionary <status-dict>`
         
         """
         if account in self.accounts:
@@ -82,7 +85,7 @@ class ATMServer:
         
 
 def main():
-    server = SimpleXMLRPCServer(('localhost', 9000), logRequests=True, allow_none=True)
+    server = SimpleXMLRPCServer(('', 9000), logRequests=True, allow_none=True)
     server.register_introspection_functions()
     server.register_multicall_functions()
     server.register_instance(ATMServer())
