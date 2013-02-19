@@ -2,6 +2,7 @@
 Server Documentation
 ====================
 
-.. autoclass:: ATMServer.ATMServer
-   :members:
+.. automodule:: ATMServer
+   :synopsis: An ATM RPC Server
+   :members: ATMServer
 
