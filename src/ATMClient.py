@@ -31,10 +31,13 @@ def main():
         print "Unable to convert account number to number: %s" % sys.argv[4]
         sys.exit(1)
     
-    
+    # Inquiry operation
     if operation == "inquiry":
-        account_value = server.inquiry(account_number)
-        print "Current value of account %i is $%.2f" % (account_number, float(account_value))
+        return_dict = server.inquiry(account_number)
+        if return_dict['status'] == 'OK':
+            print "Current value of account %i is $%.2f" % (account_number, float(return_dict['result']))
+        else:
+            print "Error from ATM Server: %s" % return_dict['reason']
         
     elif operation == "deposit":
         try:
@@ -42,8 +45,11 @@ def main():
         except:
             print "Unable to convert money to number: %s" % sys.argv[5]
             sys.exit(1)
-        server.deposit(account_number, account_modify)
-        print "Successful deposit of $%.2f to account %i" % (account_modify, account_number)
+        return_dict = server.deposit(account_number, account_modify)
+        if return_dict['status'] == 'OK':
+            print "Successful deposit of $%.2f to account %i" % (account_modify, account_number)
+        else:
+            print "Error from ATM Server: %s" % return_dict['reason']
         
     elif operation == "withdraw":
         try:
@@ -51,11 +57,14 @@ def main():
         except:
             print "Unable to convert money to number: %s" % sys.argv[5]
             sys.exit(1)
-        server.withdraw(account_number, account_modify)
-        print "Successful withdraw of $%.2f to account %i" % (account_modify, account_number)
+        return_dict = server.withdraw(account_number, account_modify)
+        if return_dict['status'] == 'OK':
+            print "Successful withdraw of $%.2f to account %i" % (account_modify, account_number)
+        else:
+            print "Error from ATM Server: %s" % return_dict['reason']
     
     else:
-        print "Unidentified operation: %s" % operation
+        print "Unknown operation: %s" % operation
         sys.exit(1)
 
 

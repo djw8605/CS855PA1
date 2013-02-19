@@ -2,6 +2,22 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 
 class ATMServer:
+    """This is the main ATMServer that should be executed.
+    
+    It can be executed with the command::
+        $ python ATMServer.py
+        
+    All public functions return a status dict with the following elements:
+    
+    
+        status (str)
+            Either ``OK`` or ``ERROR`` indicating success or failure, respectibly
+        reason (str)
+            If status is ``ERROR``, then reason is the error string describing the issue.
+        result (str)
+            If the function requires sending back information, it will be stored in the result
+    
+    """
     
     def __init__(self):
         
@@ -10,18 +26,57 @@ class ATMServer:
         
         
     def deposit(self, account, amount):
+        """Deposit money into the account.
+        
+        :param int account: Account number to deposit money into
+        :param float amount: value to be added to the account
+            
+        :rtype: status dict (described above)
+        
+        This function will fail if the account does not exist.
+        
+        """
+        if account not in self.accounts:
+            return { 'status': 'ERROR', 'reason': "Account %s was not found" % account }
+        
         self.accounts[int(account)] += float(amount)
+        return { 'status': 'OK' }
 
         
     def withdraw(self, account, amount):
-        self.accounts[int(account)] -= float(amount)
+        """Withdraw money from the account
+        
+        :param int account: Account number to deposit money into
+        :param float amount: value to be added to the account
+            
+        :rtype: status dict (described above)
+            
+        This function will fail if the account does not have sufficient funds to make the withdraw.
+        
+        """
+        if account not in self.accounts:
+            return { 'status': 'ERROR', 'reason': "Account %s was not found" % account }
+        
+        if  self.accounts[int(account)] >= float(amount):
+            self.accounts[int(account)] -= float(amount)
+            return { 'status': 'OK' }
+        else:
+            return { 'status': 'ERROR', 'reason': "Insufficient Funds"}
 
         
     def inquiry(self, account):
+        """
+        Inquire the account amount
+        
+        :param int account: Account number to deposit money into
+            
+        :rtype: status dict (described above)
+        
+        """
         if account in self.accounts:
-            return self.accounts[account]
+            return { 'status': 'OK', 'result': self.accounts[account] }
         else:
-            return 0
+            return { 'status': 'ERROR', 'reason': "Unknown account %s" % account }
 
         
         
