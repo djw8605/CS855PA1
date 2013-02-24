@@ -1,7 +1,7 @@
 
 
-Derek's ATM Server Design Document
-==================================
+Design Document
+===============
 
 This document will discuss the ATM RPC design.
 
