@@ -19,10 +19,4 @@ Contents:
    EC2 Execution <EC2Execution>
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
