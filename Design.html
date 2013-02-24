@@ -1,0 +1,170 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Design Document &mdash; CS855 ATM Server 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CS855 ATM Server 1.0 documentation" href="index.html" />
+    <link rel="next" title="Server Documentation" href="Server.html" />
+    <link rel="prev" title="Welcome to CS855 ATM Server’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Server.html" title="Server Documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to CS855 ATM Server’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">CS855 ATM Server 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="design-document">
+<h1>Design Document<a class="headerlink" href="#design-document" title="Permalink to this headline">¶</a></h1>
+<p>This document will discuss the ATM RPC design.</p>
+<div class="section" id="how-it-works">
+<h2>How it Works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h2>
+<p>The ATM is designed using the python <a class="reference external" href="http://docs.python.org/2/library/simplexmlrpcserver.html">XMLRPC library</a>.</p>
+<p>In my design, the <a class="reference internal" href="Client.html#module-ATMClient" title="ATMClient: An simple ATM client"><tt class="xref py py-class docutils literal"><span class="pre">ATMClient</span></tt></a> directly connects to the server.  In this case, the <a class="reference internal" href="Client.html#module-ATMClient" title="ATMClient: An simple ATM client"><tt class="xref py py-class docutils literal"><span class="pre">ATMClient</span></tt></a> must know the Server&#8217;s address.  Full documentation of the Client&#8217;s operation is documented on the <a class="reference internal" href="Client.html#client-docs"><em>Client Documentation</em></a>.</p>
+<p>The Server exports an instance of the <a class="reference internal" href="Server.html#module-ATMServer" title="ATMServer: An ATM RPC Server"><tt class="xref py py-class docutils literal"><span class="pre">ATMServer</span></tt></a> object.  This is done with the code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">SimpleXMLRPCServer</span> <span class="kn">import</span> <span class="n">SimpleXMLRPCServer</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">SimpleXMLRPCServer</span><span class="p">((</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="mi">9000</span><span class="p">),</span> <span class="n">logRequests</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">server</span><span class="o">.</span><span class="n">register_introspection_functions</span><span class="p">()</span>
+<span class="n">server</span><span class="o">.</span><span class="n">register_multicall_functions</span><span class="p">()</span>
+<span class="n">server</span><span class="o">.</span><span class="n">register_instance</span><span class="p">(</span><span class="n">ATMServer</span><span class="p">())</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;Use Control-C to exit&#39;</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;Exiting&#39;</span>
+</pre></div>
+</div>
+<p>Each public function (funciton not starting with an underscore) in the <a class="reference internal" href="Server.html#module-ATMServer" title="ATMServer: An ATM RPC Server"><tt class="xref py py-class docutils literal"><span class="pre">ATMServer</span></tt></a> is then available to be called.  Additionally, state is kept between calls since it&#8217;s all one instance.</p>
+<p>The <a class="reference internal" href="Server.html#module-ATMServer" title="ATMServer: An ATM RPC Server"><tt class="xref py py-class docutils literal"><span class="pre">ATMServer</span></tt></a> starts with only 1 account.  Since there is only 1 account, responses are only give for 1 account.  All requests for other accounts will cause an error.</p>
+<p>The RPC functions all return a special data structure, a <a class="reference internal" href="Server.html#status-dict"><em>Status Dictionary</em></a>, which will return the status of the request, as well as a failure reason or a request response.  This is transferred with a dictionary, which is then serialized by the underlying XML RPC library.</p>
+</div>
+<div class="section" id="design-trade-offs">
+<h2>Design Trade-offs<a class="headerlink" href="#design-trade-offs" title="Permalink to this headline">¶</a></h2>
+<p>he XML-RPC library provided by Python greatly simplifies the RPC aspect of the communication.  This is because the Python XMLRPC:</p>
+<ul class="simple">
+<li>Does not require interface definition</li>
+<li>Does not require a registrer</li>
+<li>Performs simple XML HTTP requests in order to perform RPC.</li>
+</ul>
+<p>Because of these advantages over more complex RPC systems, such as Java&#8217;s RMI, it is much simplier to create a RPC server in Python.</p>
+<p>Since the requests are all done over HTTP, it is very easy and well known how to secure the communication (HTTPS) and how to load balance requests (Linux Virtual Server).</p>
+</div>
+<div class="section" id="improvements-and-extensions">
+<h2>Improvements and Extensions<a class="headerlink" href="#improvements-and-extensions" title="Permalink to this headline">¶</a></h2>
+<p>The design of the <a class="reference internal" href="Server.html#module-ATMServer" title="ATMServer: An ATM RPC Server"><tt class="xref py py-class docutils literal"><span class="pre">ATMServer</span></tt></a> is very simple.  It could be improved by:</p>
+<ul class="simple">
+<li>Secure Account Storage - Since we are running on Amazon EC2, this could easily be done with on of many database systems available on EC2 such as Dynamo and RDS.</li>
+<li>Load Balanced Servers - Many more clients can be handled with load balanced HTTP requests.</li>
+<li>Authenticated Requests - It is well known how to handle authorize HTTP requests, digest or SSL Certs.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Design Document</a><ul>
+<li><a class="reference internal" href="#how-it-works">How it Works</a></li>
+<li><a class="reference internal" href="#design-trade-offs">Design Trade-offs</a></li>
+<li><a class="reference internal" href="#improvements-and-extensions">Improvements and Extensions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to CS855 ATM Server&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Server.html"
+                        title="next chapter">Server Documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/Design.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Server.html" title="Server Documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to CS855 ATM Server’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">CS855 ATM Server 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Derek Weitzel.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

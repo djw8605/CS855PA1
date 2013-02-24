@@ -1,0 +1,170 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>EC2 Execution &mdash; CS855 ATM Server 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CS855 ATM Server 1.0 documentation" href="index.html" />
+    <link rel="prev" title="Client Documentation" href="Client.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Client.html" title="Client Documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">CS855 ATM Server 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="ec2-execution">
+<h1>EC2 Execution<a class="headerlink" href="#ec2-execution" title="Permalink to this headline">¶</a></h1>
+<p>EC2 Execution is done by submitting jobs to <a class="reference external" href="http://research.cs.wisc.edu/htcondor/">HTCondor</a> that start <a class="reference external" href="http://research.cs.wisc.edu/htcondor/manual/v7.9/5_3Grid_Universe.html#SECTION00636000000000000000">EC2 Spot Instances</a>.</p>
+<div class="section" id="preparing-submission">
+<h2>Preparing Submission<a class="headerlink" href="#preparing-submission" title="Permalink to this headline">¶</a></h2>
+<p>Submission is done with <a class="reference external" href="http://research.cs.wisc.edu/htcondor/">HTCondor</a>.  An EC2 Submission file was created:</p>
+<div class="highlight-python"><pre>universe = grid
+grid_resource = ec2 https://ec2.amazonaws.com/
+executable = /bin/true
+
+# Amazon Linux AMI
+ec2_ami_id = ami-04cf5c6d
+
+ec2_access_key_id = access_key
+ec2_secret_access_key = secret_key
+ec2_keypair_file = keyfile.$(CLUSTER)
+ec2_security_groups = bosco
+ec2_instance_type = m1.small
+ec2_spot_price = 0.04
+ec2_user_data_file = ami-run.sh
+ec2_tag_concat = true
+periodic_remove = JobStatus == 2 &amp;&amp; (time() - EnteredCurrentStatus) &gt; 60*120
+log = ec2.log
+queue</pre>
+</div>
+<p>As you can see, <tt class="docutils literal"><span class="pre">ec2_user_data_file</span></tt> is set to ami-run.sh.  This ami-run.sh contains the script that will be executed at the first start of the instance:</p>
+<div class="highlight-python"><pre>#!/bin/sh
+
+rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+yum -y install yum-priorities git
+
+# Checkout the project
+git clone git://github.com/djw8605/CS855PA1.git
+
+# Start the server
+cd CS855PA1
+python src/ATMServer.py</pre>
+</div>
+<p>Each instance will run this script since the <a class="reference external" href="https://aws.amazon.com/amazon-linux-ami/">Amazon Linux AMI</a> contains <a class="reference external" href="https://help.ubuntu.com/community/CloudInit">CloudInit</a>.</p>
+<p>Addionally, the submit file has a <tt class="docutils literal"><span class="pre">periodic_remove</span></tt> statement that will kill the instance after 2 hours of execution.</p>
+</div>
+<div class="section" id="testing-execution">
+<h2>Testing Execution<a class="headerlink" href="#testing-execution" title="Permalink to this headline">¶</a></h2>
+<p>Testing was done by SSHing into the EC2 instance and running the Client against anther EC2 instance:</p>
+<div class="highlight-python"><pre>$ python ATMClient.py  ec2-54-234-213-102.compute-1.amazonaws.com 9000 inquiry 100
+Current value of account 100 is $1000.00
+$ python ATMClient.py  ec2-54-234-213-102.compute-1.amazonaws.com 9000 deposit 100 1001
+Successful deposit of $1001.00 to account 100
+$ python ATMClient.py  ec2-54-234-213-102.compute-1.amazonaws.com 9000 inquiry 100
+Current value of account 100 is $2001.00
+$ python ATMClient.py  ec2-54-234-213-102.compute-1.amazonaws.com 9000 withdraw 100 392
+Successful withdraw of $392.00 to account 100
+$ python ATMClient.py  ec2-54-234-213-102.compute-1.amazonaws.com 9000 inquiry 100
+Current value of account 100 is $1609.00</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">EC2 Execution</a><ul>
+<li><a class="reference internal" href="#preparing-submission">Preparing Submission</a></li>
+<li><a class="reference internal" href="#testing-execution">Testing Execution</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Client.html"
+                        title="previous chapter">Client Documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/EC2Execution.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="Client.html" title="Client Documentation"
+             >previous</a> |</li>
+        <li><a href="index.html">CS855 ATM Server 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Derek Weitzel.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

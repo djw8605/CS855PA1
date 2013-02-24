@@ -1,4 +1,6 @@
 
+.. _client-docs:
+
 Client Documentation
 ====================
 

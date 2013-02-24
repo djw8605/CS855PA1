@@ -13,14 +13,10 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   Design Document <Design>
    Server
    Client
+   EC2 Execution <EC2Execution>
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 

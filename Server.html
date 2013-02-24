@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="CS855 ATM Server 1.0 documentation" href="index.html" />
     <link rel="next" title="Client Documentation" href="Client.html" />
-    <link rel="prev" title="Welcome to CS855 ATM Server’s documentation!" href="index.html" /> 
+    <link rel="prev" title="Derek’s ATM Server Design Document" href="Design.html" /> 
   </head>
   <body>
     <div class="related">
@@ -42,7 +42,7 @@
           <a href="Client.html" title="Client Documentation"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Welcome to CS855 ATM Server’s documentation!"
+          <a href="Design.html" title="Derek’s ATM Server Design Document"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">CS855 ATM Server 1.0 documentation</a> &raquo;</li> 
       </ul>
@@ -53,17 +53,11 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="module-ATMServer">
-<span id="server-documentation"></span><h1>Server Documentation<a class="headerlink" href="#module-ATMServer" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="ATMServer.ATMServer">
-<em class="property">class </em><tt class="descclassname">ATMServer.</tt><tt class="descname">ATMServer</tt><a class="headerlink" href="#ATMServer.ATMServer" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the main ATMServer that should be executed.</p>
-<p>It can be executed with the command:</p>
-<div class="highlight-python"><pre>$ python ATMServer.py</pre>
-</div>
-<p>By default, it will run on port 9000 of the local server, and will listen to traffic from all sources (insecure!)</p>
-<dl class="docutils" id="status-dict">
+  <div class="section" id="server-documentation">
+<h1>Server Documentation<a class="headerlink" href="#server-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="status-dictionary">
+<span id="status-dict"></span><h2>Status Dictionary<a class="headerlink" href="#status-dictionary" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
 <dt>All public functions return a status <tt class="docutils literal"><span class="pre">dict</span></tt> with the following elements:</dt>
 <dd><dl class="first last docutils">
 <dt>status (str)</dt>
@@ -75,9 +69,24 @@
 </dl>
 </dd>
 </dl>
+</div>
+<div class="section" id="operation">
+<h2>Operation<a class="headerlink" href="#operation" title="Permalink to this headline">¶</a></h2>
+<p>This is the main ATMServer that should be executed.</p>
+<p>It can be executed with the command:</p>
+<div class="highlight-python"><pre>$ python ATMServer.py</pre>
+</div>
+<p>By default, it will run on port 9000 of the local server, and will listen to traffic from all sources (insecure!)</p>
+</div>
+<div class="section" id="module-ATMServer">
+<span id="atmserver-technical-document"></span><h2>ATMServer Technical Document<a class="headerlink" href="#module-ATMServer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ATMServer.ATMServer">
+<em class="property">class </em><tt class="descclassname">ATMServer.</tt><tt class="descname">ATMServer</tt><a class="reference internal" href="_modules/ATMServer.html#ATMServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ATMServer.ATMServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Main ATMServer that should be used to export.</p>
 <dl class="method">
 <dt id="ATMServer.ATMServer.deposit">
-<tt class="descname">deposit</tt><big>(</big><em>account</em>, <em>amount</em><big>)</big><a class="headerlink" href="#ATMServer.ATMServer.deposit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">deposit</tt><big>(</big><em>account</em>, <em>amount</em><big>)</big><a class="reference internal" href="_modules/ATMServer.html#ATMServer.deposit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ATMServer.ATMServer.deposit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deposit money into the account.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -99,7 +108,7 @@
 
 <dl class="method">
 <dt id="ATMServer.ATMServer.inquiry">
-<tt class="descname">inquiry</tt><big>(</big><em>account</em><big>)</big><a class="headerlink" href="#ATMServer.ATMServer.inquiry" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">inquiry</tt><big>(</big><em>account</em><big>)</big><a class="reference internal" href="_modules/ATMServer.html#ATMServer.inquiry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ATMServer.ATMServer.inquiry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inquire the account amount</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -115,7 +124,7 @@
 
 <dl class="method">
 <dt id="ATMServer.ATMServer.withdraw">
-<tt class="descname">withdraw</tt><big>(</big><em>account</em>, <em>amount</em><big>)</big><a class="headerlink" href="#ATMServer.ATMServer.withdraw" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">withdraw</tt><big>(</big><em>account</em>, <em>amount</em><big>)</big><a class="reference internal" href="_modules/ATMServer.html#ATMServer.withdraw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ATMServer.ATMServer.withdraw" title="Permalink to this definition">¶</a></dt>
 <dd><p>Withdraw money from the account</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -138,6 +147,7 @@
 </dd></dl>
 
 </div>
+</div>
 
 
           </div>
@@ -145,9 +155,19 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Server Documentation</a><ul>
+<li><a class="reference internal" href="#status-dictionary">Status Dictionary</a></li>
+<li><a class="reference internal" href="#operation">Operation</a></li>
+<li><a class="reference internal" href="#module-ATMServer">ATMServer Technical Document</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
-  <p class="topless"><a href="index.html"
-                        title="previous chapter">Welcome to CS855 ATM Server&#8217;s documentation!</a></p>
+  <p class="topless"><a href="Design.html"
+                        title="previous chapter">Derek&#8217;s ATM Server Design Document</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="Client.html"
                         title="next chapter">Client Documentation</a></p>
@@ -186,7 +206,7 @@
           <a href="Client.html" title="Client Documentation"
              >next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Welcome to CS855 ATM Server’s documentation!"
+          <a href="Design.html" title="Derek’s ATM Server Design Document"
              >previous</a> |</li>
         <li><a href="index.html">CS855 ATM Server 1.0 documentation</a> &raquo;</li> 
       </ul>

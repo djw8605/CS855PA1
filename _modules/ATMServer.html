@@ -1,0 +1,196 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ATMServer &mdash; CS855 ATM Server 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="CS855 ATM Server 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">CS855 ATM Server 1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for ATMServer</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/python</span>
+<span class="kn">from</span> <span class="nn">SimpleXMLRPCServer</span> <span class="kn">import</span> <span class="n">SimpleXMLRPCServer</span>
+
+<div class="viewcode-block" id="ATMServer"><a class="viewcode-back" href="../Server.html#ATMServer.ATMServer">[docs]</a><span class="k">class</span> <span class="nc">ATMServer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This is the main ATMServer that should be executed.</span>
+<span class="sd">    </span>
+<span class="sd">    It can be executed with the command::</span>
+<span class="sd">    </span>
+<span class="sd">        $ python ATMServer.py</span>
+<span class="sd">    </span>
+<span class="sd">    By default, it will run on port 9000 of the local server, and will listen to traffic from all sources (insecure!)</span>
+<span class="sd">    </span>
+<span class="sd">    .. _status-dict:</span>
+<span class="sd">    </span>
+<span class="sd">    All public functions return a status ``dict`` with the following elements:</span>
+<span class="sd">        status (str)</span>
+<span class="sd">            Either ``OK`` or ``ERROR`` indicating success or failure, respectibly</span>
+<span class="sd">        reason (str)</span>
+<span class="sd">            If status is ``ERROR``, then reason is the error string describing the issue.</span>
+<span class="sd">        result (str)</span>
+<span class="sd">            If the function requires sending back information, it will be stored in the result</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="c"># Initialized the starting account</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span> <span class="o">=</span> <span class="p">{</span><span class="mi">100</span><span class="p">:</span> <span class="mf">1000.0</span><span class="p">}</span>
+        
+        
+<div class="viewcode-block" id="ATMServer.deposit"><a class="viewcode-back" href="../Server.html#ATMServer.ATMServer.deposit">[docs]</a>    <span class="k">def</span> <span class="nf">deposit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">account</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deposit money into the account.</span>
+<span class="sd">        </span>
+<span class="sd">        :param int account: Account number to deposit money into</span>
+<span class="sd">        :param float amount: value to be added to the account</span>
+<span class="sd">            </span>
+<span class="sd">        :rtype: status dict, see: :ref:`Status Dictionary &lt;status-dict&gt;`</span>
+<span class="sd">        </span>
+<span class="sd">        This function will fail if the account does not exist.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">account</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span> <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="s">&#39;ERROR&#39;</span><span class="p">,</span> <span class="s">&#39;reason&#39;</span><span class="p">:</span> <span class="s">&quot;Account </span><span class="si">%s</span><span class="s"> was not found&quot;</span> <span class="o">%</span> <span class="n">account</span> <span class="p">}</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">account</span><span class="p">)]</span> <span class="o">+=</span> <span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span> <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span> <span class="p">}</span>
+
+        </div>
+<div class="viewcode-block" id="ATMServer.withdraw"><a class="viewcode-back" href="../Server.html#ATMServer.ATMServer.withdraw">[docs]</a>    <span class="k">def</span> <span class="nf">withdraw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">account</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Withdraw money from the account</span>
+<span class="sd">        </span>
+<span class="sd">        :param int account: Account number to deposit money into</span>
+<span class="sd">        :param float amount: value to be added to the account</span>
+<span class="sd">            </span>
+<span class="sd">        :rtype: status dict, see: :ref:`Status Dictionary &lt;status-dict&gt;`</span>
+<span class="sd">            </span>
+<span class="sd">        This function will fail if the account does not have sufficient funds to make the withdraw.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">account</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span> <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="s">&#39;ERROR&#39;</span><span class="p">,</span> <span class="s">&#39;reason&#39;</span><span class="p">:</span> <span class="s">&quot;Account </span><span class="si">%s</span><span class="s"> was not found&quot;</span> <span class="o">%</span> <span class="n">account</span> <span class="p">}</span>
+        
+        <span class="k">if</span>  <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">account</span><span class="p">)]</span> <span class="o">&gt;=</span> <span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">account</span><span class="p">)]</span> <span class="o">-=</span> <span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span> <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span> <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span> <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="s">&#39;ERROR&#39;</span><span class="p">,</span> <span class="s">&#39;reason&#39;</span><span class="p">:</span> <span class="s">&quot;Insufficient Funds&quot;</span><span class="p">}</span>
+
+        </div>
+<div class="viewcode-block" id="ATMServer.inquiry"><a class="viewcode-back" href="../Server.html#ATMServer.ATMServer.inquiry">[docs]</a>    <span class="k">def</span> <span class="nf">inquiry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">account</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inquire the account amount</span>
+<span class="sd">        </span>
+<span class="sd">        :param int account: Account number to deposit money into</span>
+<span class="sd">            </span>
+<span class="sd">        :rtype: status dict, see: :ref:`Status Dictionary &lt;status-dict&gt;`</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">account</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span> <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span> <span class="s">&#39;result&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">accounts</span><span class="p">[</span><span class="n">account</span><span class="p">]</span> <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span> <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="s">&#39;ERROR&#39;</span><span class="p">,</span> <span class="s">&#39;reason&#39;</span><span class="p">:</span> <span class="s">&quot;Unknown account </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">account</span> <span class="p">}</span>
+
+        
+        
+</div></div>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">SimpleXMLRPCServer</span><span class="p">((</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="mi">9000</span><span class="p">),</span> <span class="n">logRequests</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">register_introspection_functions</span><span class="p">()</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">register_multicall_functions</span><span class="p">()</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">register_instance</span><span class="p">(</span><span class="n">ATMServer</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;Use Control-C to exit&#39;</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;Exiting&#39;</span>
+
+
+
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">CS855 ATM Server 1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Derek Weitzel.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

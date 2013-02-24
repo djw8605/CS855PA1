@@ -50,7 +50,7 @@
           <div class="body">
             
   <div class="section" id="module-ATMClient">
-<span id="client-documentation"></span><h1>Client Documentation<a class="headerlink" href="#module-ATMClient" title="Permalink to this headline">¶</a></h1>
+<span id="client-documentation"></span><span id="client-docs"></span><h1>Client Documentation<a class="headerlink" href="#module-ATMClient" title="Permalink to this headline">¶</a></h1>
 <p>The ATM Client can be used for example by issueing the command:</p>
 <div class="highlight-python"><pre>$ python ATMClient.py &lt;server&gt; &lt;port&gt; &lt;operation&gt; &lt;account&gt; [&lt;amount&gt;]</pre>
 </div>
@@ -60,10 +60,13 @@
 <dt>port</dt>
 <dd>Port that the client should use to connect to the ATM Server</dd>
 <dt>operation</dt>
-<dd>One of:
-* inquiry - Check the status of an account
-* deposit - Deposit money into the account
-* withdraw - Withdraw money from an account</dd>
+<dd><p class="first">One of:</p>
+<ul class="last simple">
+<li>inquiry - Check the status of an account</li>
+<li>deposit - Deposit money into the account</li>
+<li>withdraw - Withdraw money from an account</li>
+</ul>
+</dd>
 <dt>account</dt>
 <dd>This is the numeric account number.  Must be an integer</dd>
 <dt>amount</dt>
