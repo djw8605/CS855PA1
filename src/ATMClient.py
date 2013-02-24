@@ -13,9 +13,11 @@ port
     Port that the client should use to connect to the ATM Server
 operation
     One of:
+    
     * inquiry - Check the status of an account
     * deposit - Deposit money into the account
     * withdraw - Withdraw money from an account
+    
 account
     This is the numeric account number.  Must be an integer
 amount
