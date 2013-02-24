@@ -8,7 +8,7 @@ This document will discuss the ATM RPC design.
 How it Works
 ------------
 
-The ATM is designed using the python `XMLRPC library <http://docs.python.org/2/library/simplexmlrpcserver.html>`.
+The ATM is designed using the python `XMLRPC library <http://docs.python.org/2/library/simplexmlrpcserver.html>`_.
 
 In my design, the :class:`ATMClient` directly connects to the server.  In this case, the :class:`ATMClient` must know the Server's address.  Full documentation of the Client's operation is documented on the :ref:`client-docs`.
 

@@ -13,9 +13,10 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   Design
+   Design Document <Design>
    Server
    Client
+   EC2 Execution <EC2Execution>
 
 
 Indices and tables

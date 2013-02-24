@@ -15,10 +15,23 @@ All public functions return a status ``dict`` with the following elements:
     result (str)
         If the function requires sending back information, it will be stored in the result
     
-   
-Class Functions
----------------
+Operation
+---------
+
+This is the main ATMServer that should be executed.
+    
+It can be executed with the command::
+    
+   $ python ATMServer.py
+    
+By default, it will run on port 9000 of the local server, and will listen to traffic from all sources (insecure!)
+
+
+ATMServer Technical Document
+----------------------------
+
 .. automodule:: ATMServer
    :synopsis: An ATM RPC Server
    :members: ATMServer
+
 

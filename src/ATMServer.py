@@ -2,14 +2,8 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 
 class ATMServer:
-    """This is the main ATMServer that should be executed.
-    
-    It can be executed with the command::
-    
-        $ python ATMServer.py
-    
-    By default, it will run on port 9000 of the local server, and will listen to traffic from all sources (insecure!)
-    
+    """
+    The Main ATMServer that should be used to export.
     
     """
     
