@@ -1,0 +1,19 @@
+universe = grid
+grid_resource = ec2 https://ec2.amazonaws.com/
+executable = /bin/true
+
+# Amazon Linux AMI
+ec2_ami_id = ami-04cf5c6d
+
+ec2_access_key_id = access_key
+ec2_secret_access_key = secret_key
+ec2_keypair_file = keyfile.$(CLUSTER)
+ec2_security_groups = bosco
+ec2_instance_type = m1.small
+ec2_spot_price = 0.04
+ec2_user_data_file = ami-run.sh
+ec2_tag_concat = true
+periodic_remove = JobStatus == 2 && (time() - EnteredCurrentStatus) > 60*120
+log = ec2.log
+queue
+
