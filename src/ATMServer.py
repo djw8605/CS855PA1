@@ -7,7 +7,7 @@ import threading
 
 class Account:
     """
-    A lockable account in the ATM
+    A lockable account in the ATM that will follow transactions.
     
     """
     def __init__(self, id, amount):
@@ -22,6 +22,18 @@ class Account:
         self.lock_queue = []
         
     def lock(self, customer):
+        """
+        Lock the account.  If successful, will return True, otherwise False.
+        
+        If the lock has been set by another customer, the current customer will be 
+        put on a queue and when the customer asks again for the lock, it will receive
+        the lock if it is next on the FIFO queue.
+        
+        :param int customer: Customer id number
+        
+        :rtype: boolean if locking is successful
+        
+        """
         
         self._lock.acquire()
         if customer == self.locked_customer:
@@ -63,24 +75,57 @@ class Account:
             return False
             
     def unlock(self, customer):
+        """
+        Unlock the account.
+        
+        :param int customer: Customer id number
+        
+        """
         self._lock.acquire()
         if self.locked == True:
             self.locked = False
         self._lock.release()
     
     def deposit(self, amount):
+        """
+        Deposit amount into the the account.
+        
+        :param float amount: value to be added to the account
+        
+        """
+        
         self.tmp_amount += float(amount)
         
     def withdraw(self, amount):
+        """
+        Withdraw money into the account
+        
+        :param float amount: value to be added to the account
+        
+        """
         self.tmp_amount -= float(amount)
         
     def inquiry(self):
+        """
+        Inquiry the account
+        
+        :rtype: float the amount of money in the account
+        
+        """
         return float(self.tmp_amount)
         
     def commit(self):
+        """
+        Commit the pending transaction
+        
+        """
         self.amount = self.tmp_amount 
         
     def abort(self):
+        """
+        Abort the pending transaction
+        
+        """
         self.tmp_amount = self.amount
         
         

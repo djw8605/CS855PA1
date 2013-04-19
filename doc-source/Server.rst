@@ -9,11 +9,11 @@ Status Dictionary
     
 All public functions return a status ``dict`` with the following elements:
     status (str)
-        Either ``OK`` or ``ERROR`` indicating success or failure, respectibly
+        Either ``OK``, ``ERROR``, or ``WAIT`` indicating success, failure, or telling the client to wait and try again, respectibly.
     reason (str)
         If status is ``ERROR``, then reason is the error string describing the issue.
     result (str)
-        If the function requires sending back information, it will be stored in the result
+        If the function requires sending back information, it will be stored in the result.
     
 Operation
 ---------
@@ -32,6 +32,7 @@ ATMServer Technical Document
 
 .. automodule:: ATMServer
    :synopsis: An ATM RPC Server
-   :members: ATMServer
+   :members: ATMServer, Account
+
 
 

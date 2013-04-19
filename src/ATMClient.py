@@ -5,7 +5,7 @@
 
 The ATM Client can be used for example by issueing the command::
 
-    $ python ATMClient.py <server> <port> <operation> <account> [<amount>]
+    $ python ATMClient.py <server> <port> <operation> <customer> [<account> [<amount>]]
 
 server
     The server that the ATM client should connect to.
@@ -17,7 +17,12 @@ operation
     * inquiry - Check the status of an account
     * deposit - Deposit money into the account
     * withdraw - Withdraw money from an account
-    
+    * begin_transaction - Start a transaction for a customer
+    * end_transaction - Commit a transaction for a customer
+    * abort_transaction - Abort a transaction for a customer
+
+customer
+    This is the customer number.  Must be an integer.
 account
     This is the numeric account number.  Must be an integer
 amount

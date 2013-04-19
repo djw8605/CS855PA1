@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'CS855 ATM Server'
+project = u'CS855 ATM Transactional Server'
 copyright = u'2013, Derek Weitzel'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -216,7 +216,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'cs855atmserver', u'CS855 ATM Server Documentation',
+    ('index', 'cs855atmserver', u'CS855 ATM Transactional Server Documentation',
      [u'Derek Weitzel'], 1)
 ]
 
@@ -230,7 +230,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'CS855ATMServer', u'CS855 ATM Server Documentation',
+  ('index', 'CS855ATMServer', u'CS855 ATM Transactional Server Documentation',
    u'Derek Weitzel', 'CS855ATMServer', 'One line description of project.',
    'Miscellaneous'),
 ]
