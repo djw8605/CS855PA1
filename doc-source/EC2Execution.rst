@@ -40,6 +40,7 @@ As you can see, ``ec2_user_data_file`` is set to ami-run.sh.  This ami-run.sh co
 
    # Start the server
    cd CS855PA1
+   git checkout PA3
    python src/ATMServer.py
    
 Each instance will run this script since the `Amazon Linux AMI <https://aws.amazon.com/amazon-linux-ami/>`_ contains `CloudInit <https://help.ubuntu.com/community/CloudInit>`_.
@@ -49,16 +50,46 @@ Addionally, the submit file has a ``periodic_remove`` statement that will kill t
 Testing Execution
 -----------------
 
-Testing was done by SSHing into the EC2 instance and running the Client against anther EC2 instance::
+Testing was done by SSHing into the EC2 instance and running the Clients against another EC2 instance::
 
-   $ python ATMClient.py  ec2-54-234-213-102.compute-1.amazonaws.com 9000 inquiry 100
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 inquiry 1 100
    Current value of account 100 is $1000.00
-   $ python ATMClient.py  ec2-54-234-213-102.compute-1.amazonaws.com 9000 deposit 100 1001
-   Successful deposit of $1001.00 to account 100
-   $ python ATMClient.py  ec2-54-234-213-102.compute-1.amazonaws.com 9000 inquiry 100
-   Current value of account 100 is $2001.00
-   $ python ATMClient.py  ec2-54-234-213-102.compute-1.amazonaws.com 9000 withdraw 100 392
-   Successful withdraw of $392.00 to account 100
-   $ python ATMClient.py  ec2-54-234-213-102.compute-1.amazonaws.com 9000 inquiry 100
-   Current value of account 100 is $1609.00
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 deposit 1 100 200
+   Successful deposit of $200.00 to account 100
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 inquiry 1 100
+   Current value of account 100 is $1200.00
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 abort_transaction 1
+   Customer 1 aborts their transaction
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 begin_transaction 1
+   Customer 1 starts their transaction
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 inquiry 1 100
+   Current value of account 100 is $1000.00
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 deposit 1 100 200
+   Successful deposit of $200.00 to account 100
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 withdraw 1 100 50
+   Successful withdraw of $50.00 to account 100
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 inquiry 1 100
+   Current value of account 100 is $1150.00
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 end_transaction 1
+   Customer 1 commits their transaction
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 begin_transaction 1
+   Customer 1 starts their transaction
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 inquiry 1 100
+   Current value of account 100 is $1150.00
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 deposit 1 100 200
+   Successful deposit of $200.00 to account 100
+   
+And on C2::
+
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 begin_transaction 2
+   Customer 2 starts their transaction
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 inquiry 2 200
+   Current value of account 200 is $1000.00
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 inquiry 2 100
+   <blocking...>
+   Current value of account 100 is $1350.00
+   $ python ATMClient.py ec2-54-224-134-194.compute-1.amazonaws.com 9000 abort_transaction 2
+   Customer 2 aborts their transaction
+   
+This testing shows that the blocking and locking mechanism works.
 
