@@ -8,6 +8,7 @@ git clone git://github.com/djw8605/CS855PA1.git
 
 # Start the server
 cd CS855PA1
+git checkout PA3
 python src/ATMServer.py
 
 
